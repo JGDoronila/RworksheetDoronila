@@ -1,0 +1,38 @@
+---
+output:
+  pdf_document: default
+  html_document: default
+---
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```{r}
+View(Shoes...Sheet)
+Shoes_Male <- subset(Shoes...Sheet, Gender == "M")
+Shoes_Male
+Shoes_Female <- subset(Shoes...Sheet, Gender == "F")
+Shoes_Female
+Mean_ShoeSize <- mean(Shoes...Sheet$ShoeSize)
+Mean_Height <- mean(Shoes...Sheet$Height)
+Mean_Shoes <- data.frame(Mean_ShoeSize, Mean_Height)
+Mean_Shoes
+months_vector <- c("March", "April", "January", "November", "January",
+ "September", "October", "September", "November", "August",
+ "January", "November", "November", "February", "May", "August",
+ "July", "December", "August", "August", "September", "November", "February", 
+ "April")
+factor_months_vector <- factor(months_vector)
+factor_months_vector
+summary_months_vector <- summary(months_vector, factor_months_vector)
+summary_months_vector
+factor_data <- data.frame(
+  Direction = c("East", "West", "North"),
+  Frequency = c(1, 4, 3)
+)
+factor_data
+new_order_data <- factor(factor_data,levels = c("East","West","North"))
+print(new_order_data)
+library(readr)
+import_march <- read_csv("worksheet#4/import_march.csv")
+View(import_march)
+import_march <- read.table(import_march.csv)
+import_march
