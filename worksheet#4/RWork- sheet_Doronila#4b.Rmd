@@ -1,8 +1,152 @@
 ---
 output:
-  pdf_document: default
   html_document: default
+  pdf_document: default
 ---
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+```
+```{r}
+vectorA <- c(1, 2, 3, 4, 5)
+
+matrixA <- matrix(0, nrow = 5, ncol = 5)
+
+print(matrixA)
+
+matrixB <- matrix(0, nrow = 5, ncol = 5)
+
+for (i in 1:5) {
+  for (j in 1:5) {
+    if(j >= i){
+      matrixB[i, j] <- j - i
+    } else {
+      matrixB[i, j] <- 0 - (j - i)
+    }
+  }
+}
+
+print(matrixB)
+
+num_rows <- 5
+
+for (i in 0:num_rows) {
+  cat(rep("*", i), "\n")
+}
+
+user_input <- as.integer(readline(prompt = "Enter the number of terms for Fibonacci sequence: "))
+a <- 0
+b <- 1
+cat("Fibonacci sequence:", a, b)
+
+repeat {
+  next_term <- a + b
+  
+  if (next_term > 500) {
+    break
+  }
+  
+  cat(" ", next_term)
+  
+  a <- b
+  b <- next_term
+}
+cat("\n")
+
+library(readr)
+Shoes_Sheet <- read_csv("Shoes_Sheet.csv")
+print(Shoes_Sheet)
+male_subset <- subset(Shoes_Sheet, Gender == "M")
+female_subset <- subset(Shoes_Sheet, Gender == "F")
+num_obs_male <- nrow(male_subset)
+num_obs_female <- nrow(female_subset)
+
+cat("Number of observations in Male: ", num_obs_male, "\n")
+cat("Number of observations in Female: ", num_obs_female, "\n")
+
+gender_counts <- table(Shoes_Sheet$Gender)
+
+barplot(gender_counts, 
+        main = "Number of Males and Females",
+        xlab = "Gender",
+        ylab = "Count",
+        col = c("blue", "pink"),
+        legend.text = c("Male", "Female"),
+        beside = TRUE)
+
+expenses <- c(Food = 60, Electricity = 10, Savings = 5, Miscellaneous = 25)
+
+percentage <- round((expenses / sum(expenses)) * 100, 1)
+
+pie(expenses, labels = paste(names(expenses), "(", percentage, "%)"), col = rainbow(length(expenses)), main = "Monthly Expenses")
+
+data(iris)
+
+str(iris)
+
+selected_columns <- c("Sepal.Length", "Sepal.Width", "Petal.Length", "Petal.Width")
+missing_columns <- setdiff(selected_columns, colnames(iris))
+
+if (length(missing_columns) > 0) {
+  stop(paste("Columns not found in iris dataset:", paste(missing_columns, collapse = ", ")))
+}
+
+means <- colMeans(iris[, selected_columns])
+
+print(means)
+
+species_counts <- table(iris$Species)
+
+pie(species_counts, labels = levels(iris$Species), col = rainbow(length(species_counts)), main = "Species Distribution in Iris Dataset", cex.main = 1.5, cex.lab = 1.2)
+
+setosa_subset <- subset(iris, Species == "setosa")
+versicolor_subset <- subset(iris, Species == "versicolor")
+virginica_subset <- subset(iris, Species == "virginica")
+
+tail(setosa_subset)
+tail(versicolor_subset)
+tail(virginica_subset)
+
+iris$Species <- as.factor(iris$Species)
+
+xlim <- range(iris$sepal.length)
+ylim <- range(iris$sepal.width)
+
+plot(iris$sepal.length, iris$sepal.width, pch = as.numeric(iris$Species), col = as.numeric(iris$Species), main = "Iris Dataset", 
+     sub = "Sepal width and length", xlab = "Sepal Length", ylab = "Sepal Width", cex.main = 1.5, cex.sub = 1.2, cex.lab = 1.2, xlim = xlim, ylim = ylim)
+
+legend("topright", legend = levels(iris$Species), col = 1:3, pch = 1:3, cex = 1.2)
+
+#The scatterplot visually represents the relationship between sepal length and sepal width for the iris dataset. The different symbols and colors distinguish between the three species (setosa, versicolor, and virginica). By examining the scatterplot, you can observe patterns and relationships between the variables for different species. For example, it might reveal differences in sepal length and width distributions among the species.
+
+library(openxlsx)
+file_path <- "path/to/alexa-file.xlsx" 
+alexa_data <- read.xlsx(file_path)
+str(alexa_data)
+
+alexa_data$Variant <- gsub("white", "new_name_white", alexa_data$Variant, ignore.case = TRUE)
+alexa_data$Variant <- gsub("black", "new_name_black", alexa_data$Variant, ignore.case = TRUE)
+
+library(dplyr)
+
+variation_counts <- alexa_data %>%
+  group_by(Variant) %>%
+  summarize(count = n())
+
+print(variation_counts)
+
+save(variation_counts, file = "variations.RData")
+
+load("variations.RData")
+
+print(variation_counts)
+
+barplot(variation_counts$count, names.arg = variation_counts$Variant, col = "skyblue", main = "Variation Counts",
+        xlab = "Variation", ylab = "Count", cex.names = 0.8)
+
+black_white_counts <- filter(variation_counts, Variant %in% c("black", "white"))
+
+barplot(black_white_counts$count, names.arg = black_white_counts$Variant, col = c("black", "white"),
+        main = "Black and White Variation Counts", xlab = "Variation", ylab = "Count", beside = TRUE, cex.names = 0.8,
+        legend.text = TRUE, args.legend = list(x = "topright", bty = "n", legend = levels(black_white_counts$Variant)))
+
 ```

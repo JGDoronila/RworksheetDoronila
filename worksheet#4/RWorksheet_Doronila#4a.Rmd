@@ -5,14 +5,17 @@ output:
 ---
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+```
 ```{r}
-View(Shoes...Sheet)
-Shoes_Male <- subset(Shoes...Sheet, Gender == "M")
+library(readr)
+Shoes_Sheet <- read_csv("/cloud/project/worksheet#4/Shoes_Sheet.csv")
+print(Shoes_Sheet)
+Shoes_Male <- subset(Shoes_Sheet, Gender == "M")
 Shoes_Male
-Shoes_Female <- subset(Shoes...Sheet, Gender == "F")
+Shoes_Female <- subset(Shoes_Sheet, Gender == "F")
 Shoes_Female
-Mean_ShoeSize <- mean(Shoes...Sheet$ShoeSize)
-Mean_Height <- mean(Shoes...Sheet$Height)
+Mean_ShoeSize <- mean(Shoes_Sheet$ShoeSize)
+Mean_Height <- mean(Shoes_Sheet$Height)
 Mean_Shoes <- data.frame(Mean_ShoeSize, Mean_Height)
 Mean_Shoes
 months_vector <- c("March", "April", "January", "November", "January",
@@ -31,8 +34,73 @@ factor_data <- data.frame(
 factor_data
 new_order_data <- factor(factor_data,levels = c("East","West","North"))
 print(new_order_data)
-library(readr)
-import_march <- read_csv("worksheet#4/import_march.csv")
-View(import_march)
-import_march <- read.table(import_march.csv)
-import_march
+import_march <- read_csv("/cloud/project/worksheet#4/import_march.csv")
+print(import_march)
+
+exhaustive_search <- function(selected_number) {
+  if (selected_number < 1 || selected_number > 50) {
+    print("The number selected is beyond the range of 1 to 50")
+  } else if (selected_number == 20) {
+    print("TRUE")
+  } else {
+    print(selected_number)
+  }
+}
+
+exhaustive_search(25)
+
+calculate_minimum_bills <- function(price) {
+  bill_denominations <- c(1000, 500, 200, 100, 50)
+  
+  remaining_price <- price
+  bills_count <- 0
+  
+  for (bill in bill_denominations) {
+    bills_needed <- floor(remaining_price / bill)
+    
+    remaining_price <- remaining_price %% bill
+    
+    bills_count <- bills_count + bills_needed
+  }
+
+  print(paste("Minimum number of bills needed:", bills_count))
+}
+
+calculate_minimum_bills(250)
+
+student_data <- data.frame(
+  Name = c("Annie", "Thea", "Steve", "Hanna"),
+  Grade_1 = c(85, 65, 75, 95),
+  Grade_2 = c(65, 75, 55, 75),
+  Grade_3 = c(85, 90, 80, 100),
+  Grade_4 = c(100, 90, 85, 90)
+)
+
+print(student_data)
+
+average_scores <- apply(student_data[, -1], 1, function(row) sum(row) / length(row))
+
+high_average_students <- student_data[average_scores > 90, ]
+
+for (i in seq_len(nrow(high_average_students))) {
+  cat(sprintf("%s's average grade this semester is %.2f.\n",
+              high_average_students$Name[i],
+              average_scores[average_scores > 90][i]))
+}
+
+average_scores_per_test <- apply(student_data[, -1], 2, function(col) sum(col) / length(col))
+
+difficult_tests <- names(average_scores_per_test)[average_scores_per_test < 80]
+
+for (test in difficult_tests) {
+  cat(sprintf("The %s test was difficult.\n", test))
+}
+high_scorers <- student_data[apply(student_data[, -1], 1, max) > 90, ]
+
+for (i in seq_len(nrow(high_scorers))) {
+  cat(sprintf("%s's highest grade this semester is %.2f.\n",
+              high_scorers$Name[i],
+              max(student_data[i, -1])))
+}
+
+```
